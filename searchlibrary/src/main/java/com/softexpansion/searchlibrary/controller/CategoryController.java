@@ -1,6 +1,5 @@
 package com.softexpansion.searchlibrary.controller;
 
-import com.softexpansion.searchlibrary.entity.Book;
 import com.softexpansion.searchlibrary.entity.Category;
 import com.softexpansion.searchlibrary.service.CategoryServiceImpl;
 import lombok.AllArgsConstructor;
