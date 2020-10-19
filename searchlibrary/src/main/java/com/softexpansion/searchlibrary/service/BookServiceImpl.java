@@ -21,14 +21,12 @@ public class BookServiceImpl implements BookService {
         Category category = categoryRepository.findByName(books.getCategoryName());
         category = category != null ? category : categoryRepository.save(new Category(books.getCategoryName()));
 
-        return booksRepository.save(Book
-                .builder()
-                .author(books.getAuthor())
-                .category(category)
-                .name(books.getName())
-                .description(books.getDescription())
-                .build()
-        );
+        return booksRepository.save(new Book(null,
+                books.getName(),
+                books.getAuthor(),
+                books.getDescription(),
+                category
+        ));
     }
 
     @Override

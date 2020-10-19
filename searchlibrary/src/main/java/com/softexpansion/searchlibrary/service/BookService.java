@@ -12,8 +12,5 @@ public interface BookService {
     Book findByName(String name);
     Book findById(Integer id);
     List<Book> findAll();
-
     void deleteBook(Integer userId);
-
-
 }

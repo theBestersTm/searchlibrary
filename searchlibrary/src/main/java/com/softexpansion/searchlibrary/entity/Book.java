@@ -1,5 +1,6 @@
 package com.softexpansion.searchlibrary.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,7 @@ import javax.persistence.*;
 @Entity
 @Table(name="book")
 @Data
-@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class Book {
 
@@ -24,6 +25,4 @@ public class Book {
     private String description;
     @ManyToOne
     private Category category;
-
-
 }
