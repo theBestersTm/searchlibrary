@@ -1,33 +1,40 @@
 package com.softexpansion.searchlibrary.service;
 
 import com.softexpansion.searchlibrary.entity.Book;
+import com.softexpansion.searchlibrary.entity.Category;
+import com.softexpansion.searchlibrary.entity.dto.BookDto;
 import com.softexpansion.searchlibrary.repository.BookRepository;
+import com.softexpansion.searchlibrary.repository.CategoryRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
-import java.util.Optional;
 
 @AllArgsConstructor
 @Service
-public class BookServiceImpl implements BookService{
+public class BookServiceImpl implements BookService {
     private final BookRepository booksRepository;
+    private final CategoryRepository categoryRepository;
 
     @Override
-    public Book saveBook(Book books) {
+    public Book saveBook(BookDto books) {
+        Category category = categoryRepository.findByName(books.getCategoryName());
+        category = category != null ? category : categoryRepository.save(new Category(books.getCategoryName()));
 
-        return booksRepository.save(books);
-
+        return booksRepository.save(Book
+                .builder()
+                .author(books.getAuthor())
+                .category(category)
+                .name(books.getName())
+                .description(books.getDescription())
+                .build()
+        );
     }
 
-    public Book updateBook(Book books) {
-
-        Optional<Book> bookFromDb = booksRepository.findById(books.getBookid());
-        Book user =  bookFromDb.orElseThrow(() -> new IllegalArgumentException("USER WITH ID : " + books.getBookid() + " not found"));
-        Book savedBook = booksRepository.save(books);
-
-        return booksRepository.save(savedBook);
+    @Override
+    public Book updateBook(BookDto books) {
+        return saveBook(books);
     }
-
 
     @Override
     public void deleteBook(Integer bookId) {
@@ -36,11 +43,7 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public Book findByName(String name) {
-        Book books = booksRepository.findByName(name);
-        if (books != null) {
-            return books;
-        }
-        return null;
+        return booksRepository.findByNameIsLike(name);
     }
 
     @Override
