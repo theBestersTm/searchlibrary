@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/books")
@@ -20,7 +21,7 @@ public class BookController {
     private final BookServiceImpl bookService;
 
     @GetMapping("/{id}")
-    public Book findUserById(@PathVariable Integer id) {
+    public Optional<Book> findUserById(@PathVariable Integer id) {
         return bookService.findById(id);
     }
 
