@@ -7,8 +7,8 @@ import com.softexpansion.searchlibrary.repository.BookRepository;
 import com.softexpansion.searchlibrary.repository.CategoryRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 @Service
@@ -18,6 +18,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book saveBook(BookDto books) {
+
         Category category = categoryRepository.findByName(books.getCategoryName());
         category = category != null ? category : categoryRepository.save(new Category(books.getCategoryName()));
 
@@ -45,8 +46,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book findById(Integer id) {
-        return booksRepository.getOne(id);
+    public Optional<Book> findById(Integer id) {
+        return booksRepository.findById(id);
     }
 
     @Override

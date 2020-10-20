@@ -3,7 +3,6 @@ package com.softexpansion.searchlibrary.config;
 import lombok.AllArgsConstructor;
 import org.apache.catalina.connector.RequestFacade;
 import org.springframework.stereotype.Component;
-
 import javax.servlet.*;
 import java.io.IOException;
 
