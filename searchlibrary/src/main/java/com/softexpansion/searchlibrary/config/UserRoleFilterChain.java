@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import javax.servlet.*;
 import java.io.IOException;
 
-
 @Component
 @AllArgsConstructor
 public class UserRoleFilterChain implements Filter {

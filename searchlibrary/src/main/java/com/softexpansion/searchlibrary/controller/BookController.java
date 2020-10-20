@@ -1,10 +1,10 @@
 package com.softexpansion.searchlibrary.controller;
 
 import com.softexpansion.searchlibrary.entity.Book;
+import com.softexpansion.searchlibrary.exception.BookNotFoundException;
 import com.softexpansion.searchlibrary.service.BookServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.Comparator;
@@ -19,7 +19,7 @@ public class BookController {
     private final BookServiceImpl bookService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Book> findUserById(@PathVariable Integer id) throws Exception {
+    public ResponseEntity<Book> findUserById(@PathVariable Integer id) throws BookNotFoundException {
         Book book = bookService.findById(id);
         return ResponseEntity.ok()
                 .body(book);

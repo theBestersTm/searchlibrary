@@ -3,12 +3,10 @@ package com.softexpansion.searchlibrary.service;
 import com.softexpansion.searchlibrary.entity.Book;
 import com.softexpansion.searchlibrary.entity.Category;
 import com.softexpansion.searchlibrary.entity.dto.BookDto;
-import com.softexpansion.searchlibrary.exception.BookException;
+import com.softexpansion.searchlibrary.exception.BookNotFoundException;
 import com.softexpansion.searchlibrary.repository.BookRepository;
-import com.softexpansion.searchlibrary.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -20,7 +18,6 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book saveBook(BookDto book) {
-
 
         Category category = categoryService.findByName(book.getCategoryName());
         return booksRepository.save(new Book(null,
@@ -35,7 +32,7 @@ public class BookServiceImpl implements BookService {
     public Book updateBook(BookDto bookDto) throws Exception {
 
         Category category = categoryService.findByName(bookDto.getCategoryName());
-        Book book = booksRepository.findById(bookDto.getBookId()).orElseThrow(() -> new BookException("Book doesnt exist"));
+        Book book = booksRepository.findById(bookDto.getBookId()).orElseThrow(() -> new BookNotFoundException("Book doesnt exist"));
 
         book.setAuthor(bookDto.getAuthor());
         book.setName(bookDto.getName());
@@ -56,13 +53,13 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book findById(Integer id) throws Exception {
-        return booksRepository.findById(id).orElseThrow(() -> new BookException("Book doesnt exist"));
+    public Book findById(Integer id) throws BookNotFoundException {
+        return booksRepository.findById(id).orElseThrow(() -> new BookNotFoundException("Book doesnt exist"));
     }
 
     @Override
     public List<Book> findAll() {
         return booksRepository.findAll();
     }
-    //catergory серви окремий, експешн, постмент тест, секрьюріті
+
 }
