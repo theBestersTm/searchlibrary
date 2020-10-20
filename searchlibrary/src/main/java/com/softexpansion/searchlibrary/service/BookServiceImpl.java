@@ -7,6 +7,7 @@ import com.softexpansion.searchlibrary.repository.BookRepository;
 import com.softexpansion.searchlibrary.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -14,14 +15,13 @@ import java.util.List;
 public class BookServiceImpl implements BookService {
 
     private final BookRepository booksRepository;
-    private final CategoryRepository categoryRepository;
+    private final CategoryServiceImpl categoryService;
 
     @Override
     public Book saveBook(BookDto book) {
 
-        Category category = categoryRepository.findByName(book.getCategoryName())
-                .orElse(categoryRepository.save(new Category(book.getCategoryName())));
 
+        Category category = categoryService.findByName(book.getCategoryName());
         return booksRepository.save(new Book(null,
                 book.getName(),
                 book.getAuthor(),
@@ -36,7 +36,7 @@ public class BookServiceImpl implements BookService {
         Book book = booksRepository.findById(bookDto.getBookId()).orElseThrow(() -> new Exception());
         book.setAuthor(bookDto.getAuthor());
         book.setName(bookDto.getAuthor());
-      //  book.setAuthor(bookDto.getAuthor());
+        //  book.setAuthor(bookDto.getAuthor());
         return booksRepository.save(book);
 
     }
@@ -60,5 +60,5 @@ public class BookServiceImpl implements BookService {
     public List<Book> findAll() {
         return booksRepository.findAll();
     }
-   //catergory серви окремий, експешн, постмент тест, секрьюріті
+    //catergory серви окремий, експешн, постмент тест, секрьюріті
 }

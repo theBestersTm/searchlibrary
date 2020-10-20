@@ -26,7 +26,7 @@ public class LibrarianBookController {
     }
 
     @PutMapping("/books/{id}")
-    public Book updateBook(@RequestBody BookDto books)  {
+    public Book updateBook(@RequestBody BookDto books) throws Exception {
         return bookService.updateBook(books);
     }
 
