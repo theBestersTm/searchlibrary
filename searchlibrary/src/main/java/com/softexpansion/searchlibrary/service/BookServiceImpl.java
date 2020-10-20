@@ -3,6 +3,7 @@ package com.softexpansion.searchlibrary.service;
 import com.softexpansion.searchlibrary.entity.Book;
 import com.softexpansion.searchlibrary.entity.Category;
 import com.softexpansion.searchlibrary.entity.dto.BookDto;
+import com.softexpansion.searchlibrary.exception.BookException;
 import com.softexpansion.searchlibrary.repository.BookRepository;
 import com.softexpansion.searchlibrary.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,10 +34,13 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book updateBook(BookDto bookDto) throws Exception {
 
-        Book book = booksRepository.findById(bookDto.getBookId()).orElseThrow(() -> new Exception());
+        Category category = categoryService.findByName(bookDto.getCategoryName());
+        Book book = booksRepository.findById(bookDto.getBookId()).orElseThrow(() -> new BookException("Book doesnt exist"));
+
         book.setAuthor(bookDto.getAuthor());
-        book.setName(bookDto.getAuthor());
-        //  book.setAuthor(bookDto.getAuthor());
+        book.setName(bookDto.getName());
+        book.setDescription(bookDto.getDescription());
+        book.setCategory(category);
         return booksRepository.save(book);
 
     }
@@ -53,7 +57,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book findById(Integer id) throws Exception {
-        return booksRepository.findById(id).orElseThrow(() -> new Exception());
+        return booksRepository.findById(id).orElseThrow(() -> new BookException("Book doesnt exist"));
     }
 
     @Override

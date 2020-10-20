@@ -19,8 +19,8 @@ public class BookController {
     private final BookServiceImpl bookService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Book> findUserById(@PathVariable Integer id) {
-        Book book = bookService.findById(id).orElse(new Book());
+    public ResponseEntity<Book> findUserById(@PathVariable Integer id) throws Exception {
+        Book book = bookService.findById(id);
         return ResponseEntity.ok()
                 .body(book);
     }
