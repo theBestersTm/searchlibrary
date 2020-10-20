@@ -15,18 +15,18 @@ public class LibrarianBookController {
     private final BookService bookService;
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUsers(@PathVariable Integer id) {
+    public ResponseEntity deleteUsers(@PathVariable Integer id) {
         bookService.deleteBook(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
-    @PostMapping
+    @PostMapping("/books")
     public Book createBook(@RequestBody BookDto books)  {
         return bookService.saveBook(books);
     }
 
-    @PostMapping("/update/{id}")
-    public Book updateBook(@RequestBody BookDto books)  {
+    @PutMapping("/books/{id}")
+    public Book updateBook(@RequestBody BookDto books) throws Exception {
         return bookService.updateBook(books);
     }
 

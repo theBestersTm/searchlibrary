@@ -14,13 +14,17 @@ public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer bookid;
+    private Integer bookId;
+
     @Column
     private String name;
+
     @Column
     private String author;
+
     @Column
     private String description;
+
     @ManyToOne
     private Category category;
 }

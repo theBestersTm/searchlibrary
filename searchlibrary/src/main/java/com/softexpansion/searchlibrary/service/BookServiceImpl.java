@@ -3,36 +3,43 @@ package com.softexpansion.searchlibrary.service;
 import com.softexpansion.searchlibrary.entity.Book;
 import com.softexpansion.searchlibrary.entity.Category;
 import com.softexpansion.searchlibrary.entity.dto.BookDto;
+import com.softexpansion.searchlibrary.exception.BookNotFoundException;
 import com.softexpansion.searchlibrary.repository.BookRepository;
-import com.softexpansion.searchlibrary.repository.CategoryRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Optional;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
 public class BookServiceImpl implements BookService {
+
     private final BookRepository booksRepository;
-    private final CategoryRepository categoryRepository;
+    private final CategoryServiceImpl categoryService;
 
     @Override
-    public Book saveBook(BookDto books) {
+    public Book saveBook(BookDto book) {
 
-        Category category = categoryRepository.findByName(books.getCategoryName());
-        category = category != null ? category : categoryRepository.save(new Category(books.getCategoryName()));
-
+        Category category = categoryService.findByName(book.getCategoryName());
         return booksRepository.save(new Book(null,
-                books.getName(),
-                books.getAuthor(),
-                books.getDescription(),
+                book.getName(),
+                book.getAuthor(),
+                book.getDescription(),
                 category
         ));
     }
 
     @Override
-    public Book updateBook(BookDto books) {
-        return saveBook(books);
+    public Book updateBook(BookDto bookDto) throws Exception {
+
+        Category category = categoryService.findByName(bookDto.getCategoryName());
+        Book book = booksRepository.findById(bookDto.getBookId()).orElseThrow(() -> new BookNotFoundException("Book doesnt exist"));
+
+        book.setAuthor(bookDto.getAuthor());
+        book.setName(bookDto.getName());
+        book.setDescription(bookDto.getDescription());
+        book.setCategory(category);
+        return booksRepository.save(book);
+
     }
 
     @Override
@@ -46,12 +53,13 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Optional<Book> findById(Integer id) {
-        return booksRepository.findById(id);
+    public Book findById(Integer id) throws BookNotFoundException {
+        return booksRepository.findById(id).orElseThrow(() -> new BookNotFoundException("Book doesnt exist"));
     }
 
     @Override
     public List<Book> findAll() {
         return booksRepository.findAll();
     }
+
 }
