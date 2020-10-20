@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/books")
@@ -17,21 +16,21 @@ import java.util.Optional;
 @AllArgsConstructor
 public class BookController {
 
-    public static final String LIBRARIAN_PASSWORD = "12345";
     private final BookServiceImpl bookService;
 
     @GetMapping("/{id}")
-    public Optional<Book> findUserById(@PathVariable Integer id) {
-        return bookService.findById(id);
+    public ResponseEntity<Book> findUserById(@PathVariable Integer id) {
+        Book book = bookService.findById(id).orElse(new Book());
+        return ResponseEntity.ok()
+                .body(book);
     }
 
     @GetMapping
     public ResponseEntity<List<Book>> findAll() {
-        List<Book> book = bookService.findAll();
-        book.sort(Comparator.comparing(o -> o.getCategory().getName()));
+        List<Book> books = bookService.findAll();
+        books.sort(Comparator.comparing(o -> o.getCategory().getName()));
         return ResponseEntity.ok()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(book);
+                .body(books);
     }
 
     @GetMapping("/findByName")
