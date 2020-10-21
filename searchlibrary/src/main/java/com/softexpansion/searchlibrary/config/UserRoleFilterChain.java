@@ -13,7 +13,7 @@ public class UserRoleFilterChain implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        boolean isLibrarian = ((RequestFacade) servletRequest).getHeader("role").equals(Role.USER.getValue());
+        boolean isLibrarian = ((RequestFacade) servletRequest).getHeader("role").equals(Role.LIBRARIAN.getValue());
         if (!isLibrarian && !((RequestFacade) servletRequest).getServletPath().contains("books")) {
             servletResponse.getOutputStream().print("forbidden");
             return;
